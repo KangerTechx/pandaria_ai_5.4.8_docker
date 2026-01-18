@@ -6,7 +6,7 @@ set -e
 # --- Default variables (overridable via .env) ---
 PROJECT_NAME="${PROJECT_NAME:-Pandaria}"
 INSTALL_PREFIX="${INSTALL_PREFIX:-/app}"
-SOURCE_PREFIX="${SOURCE_PREFIX:-/src/pandaria_5.4.8}"
+SOURCE_PREFIX="${SOURCE_PREFIX:-/src/pandaria_ai_5.4.8}"
 BUILD_DIR="$SOURCE_PREFIX/build"
 
 echo "=== Compiling Project $PROJECT_NAME ==="

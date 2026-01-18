@@ -82,6 +82,9 @@ compile:
 configure:
 	$(DOCKER_COMPOSE) run --rm $(UTILITY) configure
 
+download_client:
+	$(DOCKER_COMPOSE) run --rm $(UTILITY) install_client
+
 extract_data:
 	$(DOCKER_COMPOSE) run --rm $(UTILITY) extract_data
 
@@ -241,7 +244,7 @@ configure_client:
 apply_custom_config:
 	$(DOCKER_COMPOSE) run --rm $(UTILITY) /bin/commands$(INSTALL_PREFIX) apply_custom_config.sh $(FILE)
 
-install: fetch_source build compile extract_data setup_db configure start
+install: fetch_source build download_client compile extract_data setup_db configure start
 	@echo "Installation complete. All services are running."
 
 # --- Dependency Check ---
@@ -262,12 +265,12 @@ check:
 	@echo "All dependencies are present."
 
 fetch_source:
-	@if [ ! -d src/pandaria_5.4.8 ]; then \
+	@if [ ! -d src/pandaria_ai_5.4.8 ]; then \
 		echo "Cloning $(PROJECT_NAME) source..."; \
 		mkdir -p src; \
 		git clone $(REPO_URL) src/pandaria_5.4.8; \
 	else \
 		echo "Updating $(PROJECT_NAME) source..."; \
-		cd src/pandaria_5.4.8; \
+		cd src/pandaria_ai_5.4.8; \
 		git pull --rebase; \
 	fi

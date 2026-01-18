@@ -6,8 +6,8 @@ PROJECT_NAME="${PROJECT_NAME:-Pandaria}"
 
 SQL_INSTALL_DIR="${SQL_INSTALL_DIR:-/app/sql/install}"
 SQL_TMP_DIR="$SQL_INSTALL_DIR/tmp"
-SQL_UPDATES_DIR="${SQL_UPDATES_DIR:-/src/pandaria_5.4.8/sql/updates}"
-SQL_BASE_DIR="${SQL_BASE_DIR:-/src/pandaria_5.4.8/sql/base}"
+SQL_UPDATES_DIR="${SQL_UPDATES_DIR:-/src/pandaria_ai_5.4.8/sql/updates}"
+SQL_BASE_DIR="${SQL_BASE_DIR:-/src/pandaria_ai_5.4.8/sql/base}"
 
 # These filenames must exist in the extracted zips
 AUTH_SQL="${AUTH_SQL:-auth_04_03_2023.sql}"
