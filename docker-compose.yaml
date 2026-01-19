@@ -11,7 +11,7 @@ services:
       - "./app:/app:rw"
       - "./src:/src:rw"
       - "./app/sql/backup:/backup:rw"
-      - "${WOW_PATH}/wow-5.4.8:/app/wow:rw"
+      - "${WOW_PATH}:/app/wow:rw"
     tty: true
     restart: "no"
     profiles:
