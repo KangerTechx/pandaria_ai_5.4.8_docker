@@ -9,11 +9,11 @@ GITHUB_OWNER="KangerTechx"
 GITHUB_REPO="wow-5.4.8"
 GITHUB_RELEASE_TAG="client-mop-5.4.8"
 
-DOWNLOADS_DIR="/tmp/wow-downloads"
 
-# Respect strict du .env
-CLIENT_DIR="${WOW_PATH}"        # /app/client/wow-5.4.8
-WOW_INTERNAL="${WOW_INTERNAL}"  # /app/wow
+DOWNLOADS_DIR="/tmp/wow-downloads"
+#CLIENT_DIR="${WOW_INTERNAL:-/app/wow}"
+CLIENT_DIR="${WOW_PATH}"
+WOW_INTERNAL="/app/wow"
 
 mkdir -p "$DOWNLOADS_DIR" "$CLIENT_DIR"
 
@@ -107,6 +107,10 @@ declare -A EXTRACT_STRUCTURE=(
   ["world.zip"]="wow-5.4.8/Data"
 )
 
+# =========================
+# DÉPLACEMENTS
+# =========================
+
 declare -A MOVE_FILES=(
   ["Config.wtf"]="wow-5.4.8/WTF"
 )
@@ -123,14 +127,20 @@ download_file() {
 }
 
 # =========================
-# TÉLÉCHARGEMENTS
+# GITHUB DOWNLOAD (CORRIGÉ)
 # =========================
 
 echo "🚀 Téléchargement depuis GitHub..."
 
-API_URL="https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/releases/tags/$GITHUB_RELEASE_TAG"
+if [[ "$GITHUB_RELEASE_TAG" == "latest" ]]; then
+  API_URL="https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/releases/latest"
+else
+  API_URL="https://api.github.com/repos/$GITHUB_OWNER/$GITHUB_REPO/releases/tags/$GITHUB_RELEASE_TAG"
+fi
+
 RELEASE_JSON=$(curl -s "$API_URL")
 
+# ➜ Parsing des assets UNE SEULE FOIS
 declare -A GITHUB_ASSETS
 while read -r name url; do
   GITHUB_ASSETS["$name"]="$url"
@@ -140,11 +150,21 @@ done < <(
 
 for file in "${GITHUB_FILES[@]}"; do
   URL="${GITHUB_ASSETS[$file]}"
-  [ -z "$URL" ] && echo "⚠️  $file introuvable" && continue
+
+  if [[ -z "$URL" ]]; then
+    echo "⚠️  $file introuvable sur GitHub"
+    continue
+  fi
+
   download_file "$URL" "$DOWNLOADS_DIR/$file"
 done
 
+# =========================
+# AWS S3 DOWNLOAD
+# =========================
+
 echo -e "\n🚀 Téléchargement depuis AWS S3..."
+
 for file in "${!S3_FILES[@]}"; do
   download_file "${S3_FILES[$file]}" "$DOWNLOADS_DIR/$file"
 done
@@ -157,22 +177,38 @@ echo -e "\n📦 Extraction des fichiers..."
 
 for zip in "${EXTRACT_ORDER[@]}"; do
   SRC="$DOWNLOADS_DIR/$zip"
-  [ ! -f "$SRC" ] && echo "❌ $zip introuvable" && continue
+
+  if [[ ! -f "$SRC" ]]; then
+    echo "❌ $zip introuvable"
+    continue
+  fi
 
   DEST="$CLIENT_DIR/${EXTRACT_STRUCTURE[$zip]}"
   mkdir -p "$DEST"
+
+  echo "📦 Extraction de $zip"
   unzip -oq "$SRC" -d "$DEST"
   rm -f "$SRC"
 done
 
 # =========================
-# FLATTEN VERS WOW_INTERNAL
+# DÉPLACEMENT DES FICHIERS
 # =========================
 
-echo -e "\n🧹 Synchronisation vers $WOW_INTERNAL ..."
+echo -e "\n📁 Déplacement des fichiers de configuration..."
 
-rm -rf "$WOW_INTERNAL"
-mkdir -p "$WOW_INTERNAL"
-mv "$CLIENT_DIR/wow-5.4.8/"* "$WOW_INTERNAL/"
+for file in "${!MOVE_FILES[@]}"; do
+  SRC="$DOWNLOADS_DIR/$file"
+  DEST_DIR="$CLIENT_DIR/${MOVE_FILES[$file]}"
 
-echo -e "\n✅ Client prêt dans $WOW_INTERNAL"
+  if [[ ! -f "$SRC" ]]; then
+    echo "⚠️  $file introuvable"
+    continue
+  fi
+
+  mkdir -p "$DEST_DIR"
+  mv "$SRC" "$DEST_DIR/"
+  echo "📄 $file déplacé"
+done
+
+echo -e "\n✅ Installation terminée avec succès."
