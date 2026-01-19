@@ -10,7 +10,7 @@ INSERT INTO account (id, username, sha_pass_hash)
 VALUES (1, 'ADMIN', '8301316D0D8448A34FA6D0C6BF1CBFA2B4A1A93A');
 
 INSERT INTO account_access (id, gmlevel, RealmID)
-VALUES (1, 3, -1);
+VALUES (1, 4, -1);
 
 -- Update realmlist
 DELETE FROM realmlist;

@@ -197,6 +197,26 @@ for zip in "${EXTRACT_ORDER[@]}"; do
   rm -f "$SRC"
 done
 
+# =================================
+# DÉPLACEMENT DES FICHIERS (Config)
+# =================================
+
+echo -e "\n📁 Déplacement des fichiers de configuration..."
+
+for file in "${!MOVE_FILES[@]}"; do
+  SRC="$DOWNLOADS_DIR/$file"
+  DEST_DIR="$CLIENT_DIR/${MOVE_FILES[$file]}"
+
+  if [[ ! -f "$SRC" ]]; then
+    echo "⚠️  $file introuvable"
+    continue
+  fi
+
+  mkdir -p "$DEST_DIR"
+  mv "$SRC" "$DEST_DIR/"
+  echo "📄 $file déplacé"
+done
+
 # =========================
 # FLATTEN VERS WOW_INTERNAL
 # =========================
