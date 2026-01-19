@@ -181,8 +181,8 @@ done
 
 echo -e "\n🧹 Synchronisation vers $WOW_INTERNAL ..."
 
-rm -rf "$WOW_INTERNAL"
-mkdir -p "$WOW_INTERNAL"
-mv "$CLIENT_DIR/wow-5.4.8/"* "$WOW_INTERNAL/"
+# On vide le contenu, PAS le point de montage
+rm -rf "$WOW_INTERNAL"/*
 
-echo -e "\n✅ Client prêt dans $WOW_INTERNAL"
+# Copie du client final
+cp -a "$CLIENT_DIR/wow-5.4.8/." "$WOW_INTERNAL/"
