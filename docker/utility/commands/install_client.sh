@@ -12,10 +12,32 @@ GITHUB_RELEASE_TAG="client-mop-5.4.8"
 DOWNLOADS_DIR="/tmp/wow-downloads"
 
 # Respect strict du .env
-CLIENT_DIR="${WOW_PATH}"        # /app/client/wow-5.4.8
+CLIENT_DIR="${WOW_PATH}"        # /app/client
 WOW_INTERNAL="${WOW_INTERNAL}"  # /app/wow
 
+CLIENT_FINAL_DIR="$CLIENT_DIR/wow-5.4.8"
+
 mkdir -p "$DOWNLOADS_DIR" "$CLIENT_DIR"
+
+# =========================
+# CHECK CLIENT EXISTANT
+# =========================
+
+if [ -d "$CLIENT_FINAL_DIR" ] && [ "$(ls -A "$CLIENT_FINAL_DIR" 2>/dev/null)" ]; then
+  echo "✅ Client WoW déjà présent dans $CLIENT_FINAL_DIR"
+  echo "⏭️  Skip téléchargement & extraction"
+
+  echo -e "\n🧹 Synchronisation vers $WOW_INTERNAL ..."
+
+  # On vide le contenu, PAS le point de montage
+  rm -rf "$WOW_INTERNAL"/*
+
+  # Copie du client final
+  cp -a "$CLIENT_FINAL_DIR/." "$WOW_INTERNAL/"
+
+  echo "✅ Synchronisation terminée"
+  exit 0
+fi
 
 # =========================
 # FICHIERS GITHUB
