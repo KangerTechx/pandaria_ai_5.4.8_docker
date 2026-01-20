@@ -14,8 +14,8 @@ echo "=== Compiling Project $PROJECT_NAME ==="
 # Compiler defaults (from .env or fallback)
 #CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/clang-14}"
 #CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/clang++-14}"
-CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/gcc-11}"
-CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/g++-11}"
+CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/gcc}"
+CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/g++}"
 CMAKE_DISABLE_PCH="${CMAKE_DISABLE_PCH:-ON}" # Disable precompiled headers for stability
 BUILD_CORES="${BUILD_CORES:-0}" # 0 = all cores
 
