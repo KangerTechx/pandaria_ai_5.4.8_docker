@@ -12,8 +12,10 @@ BUILD_DIR="$SOURCE_PREFIX/build"
 echo "=== Compiling Project $PROJECT_NAME ==="
 
 # Compiler defaults (from .env or fallback)
-CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/clang-14}"
-CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/clang++-14}"
+#CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/clang-14}"
+#CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/clang++-14}"
+CMAKE_C_COMPILER="${CMAKE_C_COMPILER:-/usr/bin/gcc-11}"
+CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER:-/usr/bin/g++-11}"
 CMAKE_DISABLE_PCH="${CMAKE_DISABLE_PCH:-ON}" # Disable precompiled headers for stability
 BUILD_CORES="${BUILD_CORES:-0}" # 0 = all cores
 
@@ -70,7 +72,8 @@ if [ "${MAKE_INSTALL:-1}" -eq 1 ]; then
     fi
 
     echo "Using $CORES cores for build (System total: $TOTAL_CORES)"
-    make -j"$CORES" install
+    # make -j"$CORES" install
+    make -j2 install
 fi
 
 echo "=== Compile complete for $PROJECT_NAME ==="

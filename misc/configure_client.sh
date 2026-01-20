@@ -5,8 +5,8 @@ WOW_PATH=$1
 WOW_LOCALE="$2"
 REALM_ADDRESS="$3"
 
-REALMLIST_PATH=$WOW_PATH/Data/$WOW_LOCALE/realmlist.wtf
-CONFIG_PATH="$WOW_PATH/WTF/Config.wtf"
+REALMLIST_PATH=$WOW_PATH/wow-5.4.8/Data/$WOW_LOCALE/realmlist.wtf
+CONFIG_PATH="$WOW_PATH/wow-5.4.8/WTF/Config.wtf"
 
 echo "Configuring WoW client at: $WOW_PATH"
 echo "Locale: $WOW_LOCALE"
