@@ -8,6 +8,7 @@ FILES="
 auth_base.sql
 characters_base.sql
 world_base.sql
+playerbots_base.sql
 auth_patches_update.sql
 auth_fixes.sql
 characters_patches_update.sql
@@ -15,9 +16,12 @@ characters_fixes.sql
 world_update.sql
 world_patches_update.sql
 world_fixes.sql
+playerbots_patches_update.sql
+playerbots_fixes.sql
 auth_custom.sql
 characters_custom.sql
 world_custom.sql
+playerbots_custom.sql
 "
 
 echo "=== Installing all SQL files in order for $PROJECT_NAME ==="

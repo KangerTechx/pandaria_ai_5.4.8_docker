@@ -9,7 +9,7 @@ mkdir -p "$BACKUP_DIR"
 echo "=== Backing up ${PROJECT_NAME} databases ==="
 
 # Dump all relevant databases
-for DB in "$AUTH_DB" "$CHARACTER_DB" "$WORLD_DB"; do
+for DB in "$AUTH_DB" "$CHARACTER_DB" "$WORLD_DB" "$PLAYERBOTS_DB"; do
     echo "--- Dumping $DB ---"
     mysqldump \
         -h "$DB_HOST" \

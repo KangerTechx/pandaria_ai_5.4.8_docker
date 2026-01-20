@@ -13,16 +13,19 @@ SQL_BASE_DIR="${SQL_BASE_DIR:-/src/pandaria_ai_5.4.8/sql/base}"
 AUTH_SQL="${AUTH_SQL:-auth_04_03_2023.sql}"
 CHARACTER_SQL="${CHARACTER_SQL:-characters_29_12_2024.sql}"
 WORLD_SQL="${WORLD_SQL:-world_04_03_2023.sql}"
+PLAYERBOTS_SQL="${PLAYERBOTS_SQL:-playerbots_19_01_26.sql}"
 
 # Output bundle files (always generated with these names)
 AUTH_BUNDLE="$SQL_INSTALL_DIR/auth_base.sql"
 CHAR_BUNDLE="$SQL_INSTALL_DIR/characters_base.sql"
 WORLD_BUNDLE="$SQL_INSTALL_DIR/world_base.sql"
+PLAYERBOTS_BUNDLE="$SQL_INSTALL_DIR/playerbots_base.sql"
 WORLD_UPDATE="$SQL_INSTALL_DIR/world_update.sql"
 
 AUTH_PATCHES="$SQL_INSTALL_DIR/auth_patches_update.sql"
 CHAR_PATCHES="$SQL_INSTALL_DIR/characters_patches_update.sql"
 WORLD_PATCHES="$SQL_INSTALL_DIR/world_patches_update.sql"
+PLAYERBOTS_PATCHES="$SQL_INSTALL_DIR/playerbots_patches_update.sql"
 
 # --- Prepare directories ---
 mkdir -p "$SQL_INSTALL_DIR" "$SQL_TMP_DIR"
@@ -35,11 +38,13 @@ echo "Unzipping base databases..."
 unzip -o "$SQL_BASE_DIR/auth_*.zip" -d "$SQL_TMP_DIR"
 unzip -o "$SQL_BASE_DIR/characters_*.zip" -d "$SQL_TMP_DIR"
 unzip -o "$SQL_BASE_DIR/world_*.zip" -d "$SQL_TMP_DIR"
+unzip -o "$SQL_BASE_DIR/playerbots_*.zip" -d "$SQL_TMP_DIR"
 
 # Move/rename base SQL to consistent names
 mv -f "$SQL_TMP_DIR/$AUTH_SQL" "$AUTH_BUNDLE"
 mv -f "$SQL_TMP_DIR/$CHARACTER_SQL" "$CHAR_BUNDLE"
 mv -f "$SQL_TMP_DIR/$WORLD_SQL" "$WORLD_BUNDLE"
+mv -f "$SQL_TMP_DIR/$PLAYERBOTS_SQL" "$PLAYERBOTS_BUNDLE"
 
 # --- Find and prepare latest world update ---
 LATEST_WORLD_ZIP=$(find "$SQL_INSTALL_DIR" -maxdepth 1 -type f -name '*.zip' 2>/dev/null | head -n1)
@@ -78,6 +83,7 @@ merge_patches() {
 merge_patches "$SQL_UPDATES_DIR/auth" "$AUTH_PATCHES"
 merge_patches "$SQL_UPDATES_DIR/characters" "$CHAR_PATCHES"
 merge_patches "$SQL_UPDATES_DIR/world" "$WORLD_PATCHES"
+merge_patches "$SQL_UPDATES_DIR/playerbots" "$PLAYERBOTS_PATCHES"
 
 # --- Normalize DB names in all SQL files ---
 echo "Normalizing database names..."
@@ -87,6 +93,7 @@ for file in "$SQL_INSTALL_DIR"/*.sql; do
     sed -i -E "s/(CREATE DATABASE.*|USE) *\`auth\`/\1 \`$AUTH_DB\`/Ig" "$file"
     sed -i -E "s/(CREATE DATABASE.*|USE) *\`characters\`/\1 \`$CHARACTER_DB\`/Ig" "$file"
     sed -i -E "s/(CREATE DATABASE.*|USE) *\`world\`/\1 \`$WORLD_DB\`/Ig" "$file"
+    sed -i -E "s/(CREATE DATABASE.*|USE) *\`playerbots\`/\1 \`$PLAYERBOTS_DB\`/Ig" "$file"
 done
 
 # --- Cleanup ---

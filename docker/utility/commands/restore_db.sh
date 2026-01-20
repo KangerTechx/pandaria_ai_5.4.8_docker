@@ -32,7 +32,7 @@ reset_db() {
 }
 
 # Restore all three databases
-for DB in "$AUTH_DB" "$CHARACTER_DB" "$WORLD_DB"; do
+for DB in "$AUTH_DB" "$CHARACTER_DB" "$WORLD_DB" "$PLAYERBOTS_DB"; do
     DUMP_FILE="$BACKUP_PATH/${DB}.sql"
     reset_db "$DB"
     if [ -f "$DUMP_FILE" ]; then

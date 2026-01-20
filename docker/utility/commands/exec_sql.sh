@@ -38,6 +38,7 @@ for FILE in $FILES; do
             world_*) TARGET_DB="$WORLD_DB" ;;
             auth_*) TARGET_DB="$AUTH_DB" ;;
             characters_*) TARGET_DB="$CHARACTER_DB" ;;
+            playerbots_*) TARGET_DB="$PLAYERBOTS_DB" ;;
             *) TARGET_DB="" ;; # Will run without selecting a DB
         esac
     fi
