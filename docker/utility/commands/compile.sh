@@ -72,8 +72,8 @@ if [ "${MAKE_INSTALL:-1}" -eq 1 ]; then
     fi
 
     echo "Using $CORES cores for build (System total: $TOTAL_CORES)"
-    # make -j"$CORES" install
-    make -j2 install
+    make -j"$CORES" install
+    #make -j2 install
 fi
 
 echo "=== Compile complete for $PROJECT_NAME ==="
